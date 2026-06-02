@@ -26,16 +26,43 @@ class BankAccount:
 
 class BankingApp:
     def __init__(self, account):
-        pass
+        self.account = account
 
     def show_menu(self):
-        pass
+        print("\nBanking App Menu:")
+        print("1. View Balance")
+        print("2. Deposit")
+        print("3. Withdraw")
+        print("4. Exit")
 
     def run(self):
-        pass
+        while True:
+            self.show_menu()
+            choice = input("Enter your choice: ")
+            if choice == "1":
+                print(f"Your balance is: ${self.account.get_balance()}")
+            elif choice == "2":
+                amount = self.get_amount_input("Enter deposit amount: ")
+                if amount is not None:
+                    self.account.deposit(amount)
+                    print("Deposit successful.")
+            elif choice == "3":
+                amount = self.get_amount_input("Enter withdrawal amount: ")
+                if amount is not None:
+                    self.account.withdraw(amount)
+                    print("Withdrawal successful.")
+            elif choice == "4":
+                print("Thank you for using the Banking App.")
+                break
+            else:
+                print("Invalid choice. Please try again.")
 
     def get_amount_input(self, prompt):
-        pass
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Invalid input. Please enter a numeric value.")
+            return None
 
 def main():
     account = BankAccount("John Doe", 1000)
