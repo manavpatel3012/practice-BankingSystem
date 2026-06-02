@@ -13,11 +13,31 @@ class BankAccount:
         return self.balance
 
     def deposit(self, amount):
+        # Validate type
+        if not isinstance(amount, (int, float)):
+            raise ValueError("Deposit amount must be a number.")
+        # Reject NaN
+        try:
+            import math
+            if isinstance(amount, float) and math.isnan(amount):
+                raise ValueError("Deposit amount must be a valid number.")
+        except Exception:
+            pass
         if amount <= 0:
             raise ValueError("Deposit amount must be positive.")
         self.balance += amount
 
     def withdraw(self, amount):
+        # Validate type
+        if not isinstance(amount, (int, float)):
+            raise ValueError("Withdrawal amount must be a number.")
+        # Reject NaN
+        try:
+            import math
+            if isinstance(amount, float) and math.isnan(amount):
+                raise ValueError("Withdrawal amount must be a valid number.")
+        except Exception:
+            pass
         if amount <= 0:
             raise ValueError("Withdrawal amount must be positive.")
         if amount > self.balance:
@@ -44,13 +64,21 @@ class BankingApp:
             elif choice == "2":
                 amount = self.get_amount_input("Enter deposit amount: ")
                 if amount is not None:
-                    self.account.deposit(amount)
-                    print("Deposit successful.")
+                    try:
+                        self.account.deposit(amount)
+                    except ValueError as e:
+                        print(e)
+                    else:
+                        print("Deposit successful.")
             elif choice == "3":
                 amount = self.get_amount_input("Enter withdrawal amount: ")
                 if amount is not None:
-                    self.account.withdraw(amount)
-                    print("Withdrawal successful.")
+                    try:
+                        self.account.withdraw(amount)
+                    except ValueError as e:
+                        print(e)
+                    else:
+                        print("Withdrawal successful.")
             elif choice == "4":
                 print("Thank you for using the Banking App.")
                 break

@@ -55,3 +55,17 @@ def test_run_processes_deposit_withdraw_and_exit(monkeypatch, capsys):
     assert "Deposit successful." in captured.out
     assert "Withdrawal successful." in captured.out
     assert account.get_balance() == 125
+
+
+def test_run_handles_invalid_numeric_deposit(monkeypatch, capsys):
+    account = BankAccount("Alice", 100)
+    app = BankingApp(account)
+
+    inputs = iter(["2", "-5", "4"])
+    monkeypatch.setattr(builtins, "input", lambda prompt="": next(inputs))
+
+    app.run()
+
+    captured = capsys.readouterr()
+    assert "Deposit amount must be positive." in captured.out
+    assert account.get_balance() == 100

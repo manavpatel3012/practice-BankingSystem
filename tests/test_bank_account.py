@@ -61,3 +61,33 @@ def test_withdraw_rejects_insufficient_funds_and_keeps_balance():
         account.withdraw(50)
 
     assert account.get_balance() == 30
+
+
+def test_deposit_rejects_non_numeric_amount():
+    account = BankAccount("Alice", 50)
+
+    with pytest.raises(ValueError, match="Deposit amount must be a number"):
+        account.deposit("not-a-number")
+
+
+def test_withdraw_rejects_non_numeric_amount():
+    account = BankAccount("Alice", 50)
+
+    with pytest.raises(ValueError, match="Withdrawal amount must be a number"):
+        account.withdraw(None)
+
+
+def test_deposit_rejects_nan():
+    import math
+    account = BankAccount("Alice", 50)
+
+    with pytest.raises(ValueError, match="valid number"):
+        account.deposit(math.nan)
+
+
+def test_withdraw_rejects_nan():
+    import math
+    account = BankAccount("Alice", 50)
+
+    with pytest.raises(ValueError, match="valid number"):
+        account.withdraw(math.nan)
